@@ -36,18 +36,23 @@ gulp.task("jekyll:prod", $.shell.task("jekyll build --config _config.yml,_config
 
 // Compiles the SASS files and moves them into the "assets/stylesheets" directory
 gulp.task("styles", function () {
-  // Looks at the style.scss file for what to include and creates a style.css file
-  return gulp.src("src/assets/scss/style.scss")
-    .pipe($.sass())
-    // AutoPrefix your CSS so it works between browsers
-    .pipe($.autoprefixer("last 1 version", { cascade: true }))
-    // Directory your CSS file goes to
-    .pipe(gulp.dest("src/assets/stylesheets/"))
-    .pipe(gulp.dest("serve/assets/stylesheets/"))
-    // Outputs the size of the CSS file
-    .pipe($.size({title: "styles"}))
-    // Injects the CSS changes to your browser since Jekyll doesn"t rebuild the CSS
-    .pipe(reload({stream: true}));
+  // // Looks at the style.scss file for what to include and creates a style.css file
+  // return gulp.src("src/assets/scss/style.scss")
+  //   .pipe($.sass())
+  //   // AutoPrefix your CSS so it works between browsers
+  //   .pipe($.autoprefixer("last 1 version", { cascade: true }))
+  //   // Directory your CSS file goes to
+  //   .pipe(gulp.dest("src/assets/stylesheets/"))
+  //   .pipe(gulp.dest("serve/assets/stylesheets/"))
+  //   // Outputs the size of the CSS file
+  //   .pipe($.size({title: "styles"}))
+  //   // Injects the CSS changes to your browser since Jekyll doesn"t rebuild the CSS
+  //   .pipe(reload({stream: true}));
+  //
+  return gulp.src("src/assets/css/**")
+    .pipe(gulp.dest("src/assets/stylesheets"))
+    .pipe(gulp.dest("site/assets/stylesheets"))
+    .pipe($.size({ title: "stylesheets" }));
 });
 
 // Optimizes the images that exists
@@ -152,7 +157,7 @@ gulp.task("serve:dev", ["styles", "jekyll:dev"], function () {
 gulp.task("watch", function () {
   gulp.watch(["src/**/*.md", "src/**/*.html", "src/**/*.xml", "src/**/*.txt", "src/**/*.js"], ["jekyll-rebuild"]);
   gulp.watch(["serve/assets/stylesheets/*.css"], reload);
-  gulp.watch(["src/assets/scss/**/*.scss"], ["styles"]);
+  gulp.watch(["src/assets/css/**/*.css"], ["styles"]);
 });
 
 // Serve the site after optimizations to see that everything looks fine
